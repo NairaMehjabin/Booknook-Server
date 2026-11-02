@@ -21,6 +21,24 @@ const getBooks = async (req, res) => {
   }
 };
 
+// @desc    Get books added by a specific user email
+// @route   GET /api/books/user/:email
+const getBooksByUserEmail = async (req, res) => {
+  try {
+    const userEmail = req.params.email;
+    const books = await Book.find({ userEmail }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: books.length,
+      data: books
+    });
+  } catch (error) {
+    console.error('Error fetching user books:', error);
+    res.status(500).json({ success: false, message: 'Server error while fetching user books' });
+  }
+};
+
 // @desc    Get single book details by ID
 // @route   GET /api/books/:id
 const getBookById = async (req, res) => {
@@ -70,6 +88,7 @@ const createBook = async (req, res) => {
 
 module.exports = {
   getBooks,
+  getBooksByUserEmail,
   getBookById,
   createBook,
 };
