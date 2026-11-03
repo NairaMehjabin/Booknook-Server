@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./db');
 const bookRoutes = require('./routes/bookRoutes');
+const borrowRoutes = require('./routes/borrowRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,7 @@ connectDB();
 
 // Mount Routes
 app.use('/api/books', bookRoutes);
+app.use('/api/borrows', borrowRoutes);
 
 // Root Test Route
 app.get('/', (req, res) => {
