@@ -8,7 +8,7 @@ const borrowBook = async (req, res) => {
     const { bookId, bookTitle, bookImage, userEmail, userName, returnDate } = req.body;
 
     if (!bookId || !userEmail || !returnDate) {
-      return status(400).json({ success: false, message: 'Missing required borrow fields.' });
+      return res.status(400).json({ success: false, message: 'Missing required borrow fields.' });
     }
 
     // Check if user already active borrowed this book
