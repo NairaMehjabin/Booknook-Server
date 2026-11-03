@@ -86,9 +86,61 @@ const createBook = async (req, res) => {
   }
 };
 
+// @desc    Update an existing book by ID
+// @route   PATCH /api/books/:id
+const updateBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Book updated successfully',
+      data: updatedBook
+    });
+  } catch (error) {
+    console.error('Error updating book:', error);
+    res.status(500).json({ success: false, message: 'Server error while updating book' });
+  }
+};
+
+// @desc    Delete a book by ID
+// @route   DELETE /api/books/:id
+const deleteBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBook = await Book.findByIdAndDelete(id);
+
+    if (!deletedBook) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Book removed successfully from archive',
+      data: deletedBook
+    });
+  } catch (error) {
+    console.error('Error deleting book:', error);
+    res.status(500).json({ success: false, message: 'Server error while deleting book' });
+  }
+};
+
 module.exports = {
   getBooks,
   getBooksByUserEmail,
   getBookById,
   createBook,
+  updateBook,
+  deleteBook,
 };
